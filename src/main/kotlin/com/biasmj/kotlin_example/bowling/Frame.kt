@@ -1,4 +1,5 @@
 package com.biasmj.kotlin_example.bowling
+
 class Frame {
     var firstRoll: Int = 0
     var secondRoll: Int? = null
@@ -12,15 +13,16 @@ class Frame {
         }
     }
 
-    fun isComplete() = firstRoll == 10 || (secondRoll != null && (firstRoll + secondRoll!! < 10 || bonusRoll != null))
+    fun isComplete() = isStrike() || secondRoll?.let { isSpare() || bonusRoll != null || firstRoll + it < 10 } == true
     fun isStrike() = firstRoll == 10
-    fun isSpare() = firstRoll + (secondRoll ?: 0) == 10 && firstRoll != 10
+    fun isSpare() = secondRoll?.let { firstRoll + it == 10 && !isStrike() } == true
     fun score() = firstRoll + (secondRoll ?: 0) + (bonusRoll ?: 0)
 
     fun display() = when {
-        isStrike() -> "X"
+        isStrike() -> buildString { append("X").also { bonusRoll?.let { append(" | $secondRoll | $it") } } }
         isSpare() -> "$firstRoll | /"
-        firstRoll == 0 && secondRoll == 0 -> "- | -"
-        else -> "$firstRoll | ${secondRoll ?: ""}"
+        firstRoll == 0 -> "- | ${secondRoll?.toString() ?: "-"}"
+        secondRoll == 0 -> "$firstRoll | -"
+        else -> "$firstRoll | $secondRoll"
     }
 }
