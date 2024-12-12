@@ -18,6 +18,4 @@ class BowlingGame {
             else -> 0
         }
     }
-
-    fun display() = frames.forEachIndexed { index, frame -> println("Frame ${index + 1}: ${frame.display()}") }
 }

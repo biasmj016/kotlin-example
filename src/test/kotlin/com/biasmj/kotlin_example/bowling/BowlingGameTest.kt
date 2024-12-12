@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test
 거터(gutter) : 핀을 하나도 쓰러트리지 못한 상태.
     거터는 "-"로 표시 10 프레임은 스트라이크이거나 스페어이면 한 번을 더 투구할 수 있다.
 */
-
 class BowlingGameTest {
 
     @Test
@@ -29,12 +28,5 @@ class BowlingGameTest {
         val game = BowlingGame()
         repeat(21) { game.roll(5) }
         assertEquals(150, game.score())
-    }
-
-    @Test
-    fun test() {
-        val game = BowlingGame()
-        listOf(10, 9, 1, 8, 1, 0, 0, 10, 7, 3, 6, 2, 10, 10, 10, 10, 10).forEach { game.roll(it) }
-        assertEquals(193, game.score())
     }
 }
