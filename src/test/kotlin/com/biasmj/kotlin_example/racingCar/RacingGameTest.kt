@@ -65,4 +65,12 @@ class RacingGameTest {
         }
         assertEquals("Invalid number of rounds.", exception.message)
     }
+
+    @Test
+    fun `test racing game`() {
+        val cars = listOf(Car("Car1"), Car("Car2"))
+        val game = RacingGame(cars, 3)
+        game.start()
+        assertTrue(cars.all { it.position >= 0 })
+    }
 }
