@@ -14,4 +14,20 @@ package com.biasmj.kotlin_example.racingCar
 아래의 프로그래밍 실행 결과 예시와 동일하게 입력과 출력이 이루어져야 한다.
 */
 
-fun main() {}
+fun main() {
+    val inputValidator = GameValidator()
+    while (true) {
+        try {
+            println("Enter car names (comma separated, max 5 characters each):")
+            val carNamesInput = readln()
+            val cars = inputValidator.getCarNames(carNamesInput)
+            println("Enter number of rounds:")
+            val roundsInput = readln()
+            val rounds = inputValidator.getRounds(roundsInput)
+            RacingGame(cars, rounds).start()
+            break
+        } catch (e: IllegalArgumentException) {
+            println("[ERROR] ${e.message}")
+        }
+    }
+}
