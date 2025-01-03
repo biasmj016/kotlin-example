@@ -1,4 +1,5 @@
 package com.biasmj.kotlin_example.lotto
+
 /*
 로또 기본 규칙
 로또 번호는 1부터 45까지의 숫자 중에서 선택됩니다.
@@ -35,5 +36,38 @@ package com.biasmj.kotlin_example.lotto
 
 */
 
-class LottoGameMain {
+fun main() {
+    val lottoMachine = LottoMachine()
+    val lottoGame = LottoGame(lottoMachine)
+
+    while (true) {
+        try {
+            println("구입 금액을 입력해주세요")
+            val purchaseAmount = readLine()!!.toInt()
+            val lottos = lottoMachine.purchase(purchaseAmount)
+            println("${lottos.size}개를 구매했습니다.")
+            lottos.forEach { println(it.numbers) }
+
+            println("로또를 시작합니다.")
+            val winningNumbers = lottoGame.drawWinningNumbers()
+            val bonusNumber = lottoGame.drawBonusNumber(winningNumbers)
+            println("당첨번호 : ${winningNumbers.numbers}")
+            println("보너스 번호 : $bonusNumber")
+
+            val results = lottos.map { lottoGame.check(it, winningNumbers, bonusNumber) }
+            val winnings = results.sumOf { it.winnings }
+            val profit = lottoGame.calculateProfit(purchaseAmount, winnings)
+
+            println("당첨 통계")
+            println("---------")
+            results.groupingBy { it }.eachCount().forEach { (winnings, count) ->
+                println("${winnings.count}개 일치 (${winnings.winnings}원)- ${count}개")
+            }
+            println("총 수익률은 $profit%입니다.")
+
+            break
+        } catch (e: IllegalArgumentException) {
+            println("[ERROR] ${e.message}")
+        }
+    }
 }
