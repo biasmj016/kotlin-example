@@ -1,11 +1,13 @@
 package com.biasmj.kotlin_example.bridgeGame
 
-class BridgeGame(private val bridge: List<String>) {
+class BridgeGame(private val bridgeMaker: BridgeMaker) {
     private var attempts = 0
+    private lateinit var bridge: List<String>
     private val playerMoves = mutableListOf<String>()
     private var isSuccess = false
 
     fun start(length: Int) {
+        bridge = bridgeMaker.makeBridge(length)
         attempts = 1
         playerMoves.clear()
         isSuccess = false

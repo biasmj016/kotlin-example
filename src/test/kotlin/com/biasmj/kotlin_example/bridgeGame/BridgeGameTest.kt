@@ -6,7 +6,8 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class BridgeGameTest {
-    private val game = BridgeGame(listOf("U", "D", "U", "D", "U"))
+    private val bridgeMaker = BridgeMaker()
+    private val game = BridgeGame(bridgeMaker)
 
     @Test
     fun testStart() {
