@@ -28,5 +28,33 @@ Q(종료): 최종 결과 출력 후 게임 종료.
 성공 여부와 총 시도 횟수를 출력.
 */
 
-class BridgeGameMain {
+fun main() {
+    val bridgeMaker = BridgeMaker()
+    val game = BridgeGame(bridgeMaker)
+    val inputView = InputView()
+    val outputView = OutputView()
+    val validator = InputValidator()
+
+    try {
+        val length = inputView.inputLength()
+        validator.validateBridgeLength(length)
+        game.start(length)
+
+        while (true) {
+            val move = inputView.inputMove()
+            validator.validateMove(move)
+            val isGameRunning = game.processMove(move) {
+                val retry = inputView.inputRetry()
+                validator.validateRetry(retry)
+                retry
+            }
+
+            outputView.printBridge(game.getBridge(), game.getPlayerMoves())
+            if (!isGameRunning || game.isGameSuccess()) break
+        }
+
+        outputView.printResult(game.getBridge(), game.isGameSuccess(), game.getAttempts())
+    } catch (e: Exception) {
+        println(e.message)
+    }
 }
