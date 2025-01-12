@@ -30,5 +30,13 @@ package com.biasmj.kotlin_example.baseball
 */
 
 fun main() {
-
+    val game = BaseBallGame()
+    println("숫자 야구 게임을 시작합니다.")
+    do {
+        val gameWon = game.start()
+        if (gameWon) {
+            println("3개의 숫자를 모두 맞히셨습니다! 게임 종료")
+        }
+    } while (game.promptRestart())
+    println("게임을 종료합니다.")
 }
