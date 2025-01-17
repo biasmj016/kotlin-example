@@ -1,19 +1,14 @@
 package com.biasmj.kotlin_example.config
 
-import java.io.FileInputStream
-import java.io.IOException
 import java.util.*
 
-object PropertiesConfig {
+object PropertiesConfig : ConfigProvider {
     private val properties: Properties = Properties().apply {
-        try {
-            FileInputStream("application.properties").use { load(it) }
-        } catch (e: IOException) {
-            throw RuntimeException("Failed to load properties file: application.properties", e)
-        }
+        javaClass.classLoader.getResourceAsStream("application.properties")?.use { load(it) }
+            ?: throw RuntimeException("Failed to load properties file: application.properties")
     }
 
-    fun get(key: String): String {
-        return properties.getProperty(key) ?: throw IllegalArgumentException("Property '$key' not found.")
+    override fun get(key: String): String {
+        return properties.getProperty(key)
     }
 }
