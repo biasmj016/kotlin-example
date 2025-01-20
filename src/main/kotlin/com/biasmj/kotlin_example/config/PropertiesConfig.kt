@@ -4,11 +4,14 @@ import java.util.*
 
 object PropertiesConfig : ConfigProvider {
     private val properties: Properties = Properties().apply {
-        javaClass.classLoader.getResourceAsStream("application.properties")?.use { load(it) }
+        val classLoader = Thread.currentThread().contextClassLoader
+        val resourceStream = classLoader?.getResourceAsStream("application.properties")
             ?: throw RuntimeException("Failed to load properties file: application.properties")
+        resourceStream.use { load(it) }
     }
 
     override fun get(key: String): String {
         return properties.getProperty(key)
+            ?: throw IllegalArgumentException("Property $key not found in application.properties")
     }
 }
